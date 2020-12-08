@@ -2,10 +2,9 @@ use petgraph::Graph;
 use rustler::{
     env::{Env, OwnedEnv, SavedTerm},
     resource::ResourceArc,
-    types::atom::ok,
-    {Decoder, Encoder, NifResult, Term},
+    Term,
 };
-use std::sync::{Mutex, MutexGuard};
+use std::sync::Mutex;
 
 ////////////////////////////////////////////////////////////////////////////
 // Atoms                                                                  //
@@ -50,13 +49,13 @@ fn new() -> Rsc {
 }
 
 #[rustler::nif]
-fn node_count<'a>(rsc: Rsc) -> usize {
+fn node_count(rsc: Rsc) -> usize {
     let graph_guard = rsc.0.lock().unwrap();
     (*graph_guard).graph.node_count()
 }
 
 #[rustler::nif]
-fn add_node<'a>(rsc: Rsc, term: Term<'a>) -> usize {
+fn add_node(rsc: Rsc, term: Term<'_>) -> usize {
     let mut graph_guard = rsc.0.lock().unwrap();
     let saved_term = (*graph_guard).env.save(term);
     (*graph_guard).graph.add_node(saved_term).index()
