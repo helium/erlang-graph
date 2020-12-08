@@ -45,8 +45,8 @@ type Rsc = ResourceArc<GraphResource>;
 ////////////////////////////////////////////////////////////////////////////
 
 #[rustler::nif]
-fn new<'a>(env: Env<'a>) -> Term<'a> {
-    ResourceArc::new(GraphResource(Mutex::new(TermGraph::default()))).encode(env)
+fn new() -> Rsc {
+    ResourceArc::new(GraphResource(Mutex::new(TermGraph::default())))
 }
 
 #[rustler::nif]
