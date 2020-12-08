@@ -50,16 +50,16 @@ fn new<'a>(env: Env<'a>) -> Term<'a> {
 }
 
 #[rustler::nif]
-fn node_count<'a>(env: Env<'a>, rsc: Rsc) -> Term<'a> {
+fn node_count<'a>(rsc: Rsc) -> usize {
     let graph_guard = rsc.0.lock().unwrap();
-    (*graph_guard).graph.node_count().encode(env)
+    (*graph_guard).graph.node_count()
 }
 
 #[rustler::nif]
-fn add_node<'a>(rsc: Rsc, term: Term<'a>) {
+fn add_node<'a>(rsc: Rsc, term: Term<'a>) -> usize {
     let mut graph_guard = rsc.0.lock().unwrap();
     let saved_term = (*graph_guard).env.save(term);
-    (*graph_guard).graph.add_node(saved_term);
+    (*graph_guard).graph.add_node(saved_term).index()
 }
 
 ////////////////////////////////////////////////////////////////////////////

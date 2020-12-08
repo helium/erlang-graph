@@ -16,7 +16,7 @@ new() ->
 node_count(_Graph) ->
     not_loaded(?LINE).
 
--spec add_node(graph(), any()).
+-spec add_node(graph(), any()) -> number().
 add_node(_Graph, _Term) ->
     not_loaded(?LINE).
 
