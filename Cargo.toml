@@ -1,0 +1,15 @@
+[package]
+name = "graph"
+authors = ["Jay Kickliter <jay@helium.com>"]
+build = "native/build.rs"
+edition = "2018"
+version = "0.1.0"
+
+[lib]
+name = "graph"
+crate-type = ["dylib"]
+path = "native/graph.rs"
+
+[dependencies]
+petgraph = "0.5"
+rustler = "0.22.0-rc.0"
