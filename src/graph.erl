@@ -1,6 +1,6 @@
 -module(graph).
 
--export([new/0, add_node/2, node_count/1]).
+-export([new/0, add_node/2, node_count/1, get_node/2]).
 
 -on_load(load/0).
 
@@ -12,12 +12,16 @@
 new() ->
     not_loaded(?LINE).
 
--spec node_count(graph()) -> number().
+-spec node_count(graph()) -> pos_integer().
 node_count(_Graph) ->
     not_loaded(?LINE).
 
--spec add_node(graph(), any()) -> number().
+-spec add_node(graph(), term()) -> pos_integer().
 add_node(_Graph, _Term) ->
+    not_loaded(?LINE).
+
+-spec get_node(graph(), pos_integer()) -> term() | {badindex, pos_integer()}.
+get_node(_Graph, _Index) ->
     not_loaded(?LINE).
 
 load() ->
