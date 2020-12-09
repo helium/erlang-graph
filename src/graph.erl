@@ -1,6 +1,15 @@
 -module(graph).
 
--export([new/0, add_node/2, node_count/1, get_node/2]).
+-export([
+    new/0,
+    add_node/2,
+    add_edge/4,
+    node_count/1,
+    get_node/2,
+    get_edge/2,
+    remove_node/2,
+    remove_edge/2
+]).
 
 -on_load(load/0).
 
@@ -20,8 +29,20 @@ node_count(_Graph) ->
 add_node(_Graph, _Term) ->
     not_loaded(?LINE).
 
+add_edge(_Graph, _Start, _End, _Term) ->
+    not_loaded(?LINE).
+
 -spec get_node(graph(), pos_integer()) -> term() | {badindex, pos_integer()}.
 get_node(_Graph, _Index) ->
+    not_loaded(?LINE).
+
+get_edge(_Graph, _Index) ->
+    not_loaded(?LINE).
+
+remove_node(_Graph, _Index) ->
+    not_loaded(?LINE).
+
+remove_edge(_Graph, _Index) ->
     not_loaded(?LINE).
 
 load() ->
