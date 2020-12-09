@@ -8,7 +8,8 @@
     get_node/2,
     get_edge/2,
     remove_node/2,
-    remove_edge/2
+    remove_edge/2,
+    find_edge/3
 ]).
 
 -on_load(load/0).
@@ -43,6 +44,9 @@ remove_node(_Graph, _Index) ->
     not_loaded(?LINE).
 
 remove_edge(_Graph, _Index) ->
+    not_loaded(?LINE).
+
+find_edge(_Graph, _A, _B) ->
     not_loaded(?LINE).
 
 load() ->

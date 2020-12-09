@@ -100,6 +100,15 @@ fn remove_edge(env: Env<'_>, rsc: Rsc, idx: usize) -> Option<Term<'_>> {
         .map(|term| (*graph_guard).env.run(|e| term.load(e).in_env(env)))
 }
 
+#[rustler::nif]
+fn find_edge(rsc: Rsc, a: usize, b: usize) -> Option<usize> {
+    let graph_guard = rsc.0.lock().unwrap();
+    let tg = &*graph_guard;
+    tg.graph
+        .find_edge(NodeIndex::new(a), NodeIndex::new(b))
+        .map(|term| term.index())
+}
+
 ////////////////////////////////////////////////////////////////////////////
 // Init                                                                   //
 ////////////////////////////////////////////////////////////////////////////
@@ -114,7 +123,8 @@ rustler::init!(
         get_node,
         get_edge,
         remove_node,
-        remove_edge
+        remove_edge,
+        find_edge
     ],
     load = on_load
 );
