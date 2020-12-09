@@ -9,7 +9,11 @@
     get_edge/2,
     remove_node/2,
     remove_edge/2,
-    find_edge/3
+    find_edge/3,
+    connected_components/1,
+    tarjan_scc/1,
+    neighbors/2,
+    edges/2
 ]).
 
 -on_load(load/0).
@@ -47,6 +51,18 @@ remove_edge(_Graph, _Index) ->
     not_loaded(?LINE).
 
 find_edge(_Graph, _A, _B) ->
+    not_loaded(?LINE).
+
+connected_components(_Graph) ->
+    not_loaded(?LINE).
+
+tarjan_scc(_Graph) ->
+    not_loaded(?LINE).
+
+neighbors(_Graph, _Index) ->
+    not_loaded(?LINE).
+
+edges(_Graph, _Index) ->
     not_loaded(?LINE).
 
 load() ->
