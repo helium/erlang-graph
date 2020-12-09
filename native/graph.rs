@@ -1,8 +1,8 @@
-use petgraph::Graph;
+use petgraph::{graph::NodeIndex, Graph};
 use rustler::{
     env::{Env, OwnedEnv, SavedTerm},
     resource::ResourceArc,
-    Term,
+    Encoder, Term,
 };
 use std::sync::Mutex;
 
@@ -12,16 +12,7 @@ use std::sync::Mutex;
 
 mod atom {
     rustler::atoms! {
-        replace,
-        these,
-        with,
-        the,
-        atoms,
-        you,
-        want,
-        for_,
-        this,
-        library
+        badindex
     }
 }
 
@@ -61,11 +52,25 @@ fn add_node(rsc: Rsc, term: Term<'_>) -> usize {
     (*graph_guard).graph.add_node(saved_term).index()
 }
 
+#[rustler::nif]
+fn get_node(env: Env<'_>, rsc: Rsc, idx: usize) -> Term<'_> {
+    let graph_guard = rsc.0.lock().unwrap();
+    let tg = &*graph_guard;
+    tg.graph
+        .node_weight(NodeIndex::new(idx))
+        .map(|term| tg.env.run(|e| term.load(e).in_env(env)))
+        .unwrap_or_else(|| (atom::badindex(), idx).encode(env))
+}
+
 ////////////////////////////////////////////////////////////////////////////
 // Init                                                                   //
 ////////////////////////////////////////////////////////////////////////////
 
-rustler::init!("graph", [new, node_count, add_node], load = on_load);
+rustler::init!(
+    "graph",
+    [new, node_count, add_node, get_node],
+    load = on_load
+);
 
 fn on_load<'a>(env: Env<'a>, _term: rustler::Term<'a>) -> bool {
     rustler::resource!(GraphResource, env);
