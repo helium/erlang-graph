@@ -79,7 +79,6 @@ fold_edges(Fun, Acc, Graph, Start) when is_function(Fun, 2) ->
 fold_edges_int(_, Acc, _, _, []) ->
     Acc;
 fold_edges_int(Fun, Acc, Graph, SeenNodes, [Node | Tail]) ->
-    ct:pal("Seen ~p", [SeenNodes]),
     NewNodes = neighbors(Graph, Node) -- (SeenNodes ++ Tail),
     Edges = [
         {Node, N, graph:find_edge(Graph, Node, N)}
