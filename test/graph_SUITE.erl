@@ -42,6 +42,11 @@ basic_test(_Config) ->
     %% graph is unidirectional
     ?assertMatch({badindex, _}, graph:get_edge(G, N2)),
     E2 = graph:add_edge(G, N2, N1, <<"time's arrow flies backwards">>),
+    ?assertEqual([E2, E1], graph:fold_edges(fun(E, Acc) -> [E | Acc] end, [], G, N1)),
+    ?assertEqual(
+        [<<"the brief flash of light in between">>, <<"time's arrow flies backwards">>],
+        graph:fold_edges(fun(E, Acc) -> [graph:get_edge(G, E) | Acc] end, [], G, N2)
+    ),
     ?assertEqual([E1], graph:edges(G, N1)),
     ?assertEqual([[N2, N1]], graph:tarjan_scc(G)),
     ?assertEqual([N1], graph:connected_components(G)),

@@ -13,7 +13,8 @@
     connected_components/1,
     tarjan_scc/1,
     neighbors/2,
-    edges/2
+    edges/2,
+    fold_edges/4
 ]).
 
 -on_load(load/0).
@@ -64,6 +65,20 @@ neighbors(_Graph, _Index) ->
 
 edges(_Graph, _Index) ->
     not_loaded(?LINE).
+
+fold_edges(Fun, Acc, Graph, Start) when is_function(Fun, 2) ->
+    SeenNodes = [Start],
+    Nodes = neighbors(Graph, Start),
+    Acc2 = lists:foldl(Fun, Acc, edges(Graph, Start)),
+    fold_edges_int(Fun, Acc2, Graph, SeenNodes, Nodes).
+
+fold_edges_int(_, Acc, _, _, []) ->
+    Acc;
+fold_edges_int(Fun, Acc, Graph, SeenNodes, [Node | Tail]) ->
+    ct:pal("Seen ~p", [SeenNodes]),
+    NewNodes = neighbors(Graph, Node) -- (SeenNodes ++ Tail),
+    Acc2 = lists:foldl(Fun, Acc, edges(Graph, Node)),
+    fold_edges_int(Fun, Acc2, Graph, [Node | SeenNodes], Tail ++ NewNodes).
 
 load() ->
     erlang:load_nif(filename:join(priv(), "libgraph"), none).
